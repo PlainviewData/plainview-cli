@@ -26,9 +26,10 @@ setup(
     license='MPL-2.0',
     packages=['plainview_cli'],
 #   no dependencies in this example
-#   install_requires=[
-#       'dependency==1.2.3',
-#   ],
+    install_requires=[
+        'requests==2.19.1',
+        'appdirs==1.4.3',
+    ],
 #   no scripts in this example
 #   scripts=['bin/a-script'],
     include_package_data=True,

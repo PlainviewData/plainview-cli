@@ -1,10 +1,49 @@
 import sys
 import argparse
 
-def ExecuteCommand():
-    """The main routine."""
-    parser = argparse.ArgumentParser(description='Command Line Interface for Plainview')
-    parser.add_argument("command", help="display a square of a given number",
-                    type=str)
+from .User import login as user_login
+from .User import logout as user_logout
+from .User import get_info as user_get_info
+from .User import signup as user_signup
 
-    args = parser.parse_args()
+from .Settings import view as settings_view
+from .Settings import edit as settings_edit
+
+def ExecuteCommand():
+    '''Accepts command line arguments and executes them'''
+    parser = argparse.ArgumentParser(description='Command Line Interface for Plainview')
+    subparsers = parser.add_subparsers()
+    
+    parser_user = subparsers.add_parser('user', help='Login/logout and general user functions')
+    parser_user.add_argument('user_command', type=str, help='The user command', choices=['login', 'logout', 'info', 'signup'])
+
+    parser_archive = subparsers.add_parser('archive', help='Interact with Plainview archives')
+    parser_archive.add_argument('archive_command', type=str, help='The user command', choices=['new', 'view'])
+
+    parser_archive = subparsers.add_parser('settings', help='Interact with Plainview archives')
+    parser_archive.add_argument('settings_command', type=str, help='The user command', choices=['view', 'edit'])
+    
+    commands = parser.parse_args()
+
+    if 'user_command' in commands:
+        user_command = commands.user_command
+        
+        if user_command == 'login':
+            user_login()
+        elif user_command == 'logout':
+            user_logout()
+        elif user_command == 'info':
+            user_get_info()
+        elif user_command == 'signup':
+            user_register()
+            
+    if 'archive' in commands:
+        archive_command = commands.archive_command
+        
+    if 'settings_command' in commands:
+        settings_command = commands.settings_command
+        
+        if settings_command == 'view':
+            settings_view()
+        elif settings_command == 'edit':
+            settings_edit()
