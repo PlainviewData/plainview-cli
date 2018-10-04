@@ -2,3 +2,4 @@ build
 dist
 plainview_cli.egg-info/
 *.pyc
+**/*.pyc
