@@ -1,13 +1,13 @@
 import sys
 import argparse
+import getpass
 
 from .User import login as user_login
 from .User import logout as user_logout
 from .User import get_info as user_get_info
 from .User import signup as user_signup
 
-from .Settings import view as settings_view
-from .Settings import edit as settings_edit
+from .Settings import Settings
 
 def ExecuteCommand():
     '''Accepts command line arguments and executes them'''
@@ -24,18 +24,24 @@ def ExecuteCommand():
     parser_archive.add_argument('settings_command', type=str, help='The user command', choices=['view', 'edit'])
     
     commands = parser.parse_args()
+    
+    settings = Settings()
 
     if 'user_command' in commands:
         user_command = commands.user_command
         
         if user_command == 'login':
-            user_login()
+            username = input('Plainview username:')
+            password = getpass.getpass('Plainview password:')
+            user_login(username=username, password=password, plainview_url=settings.plainview_url)
         elif user_command == 'logout':
-            user_logout()
+            user_logout(plainview_url=settings.plainview_url)
         elif user_command == 'info':
-            user_get_info()
+            user_get_info(plainview_url=settings.plainview_url)
         elif user_command == 'signup':
-            user_register()
+            username = input('Plainview username:')
+            password = getpass.getpass('Plainview password:')
+            user_signup(username=username, password=password, plainview_url=settings.plainview_url)
             
     if 'archive' in commands:
         archive_command = commands.archive_command
@@ -44,6 +50,6 @@ def ExecuteCommand():
         settings_command = commands.settings_command
         
         if settings_command == 'view':
-            settings_view()
+            settings.view()
         elif settings_command == 'edit':
-            settings_edit()
+            settings.edit()
