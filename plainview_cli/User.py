@@ -2,9 +2,12 @@ import requests
 import pickle
 from urllib.parse import urljoin
 
+from .Schema import is_valid
+from .Schema import get_schema
+from .Exceptions import NoPlainviewUrlError
 from .utils import pretty_print_json
-        
-def login(username, password, plainview_url):
+   
+def login(username='', password='', plainview_url=''):
     '''Log into a Plainview user account if not already logged in'''
     if logged_in(plainview_url):
         print('You are already logged in. Run \'plainview user logout\' to logout')
@@ -16,11 +19,13 @@ def login(username, password, plainview_url):
     }
     
     if not plainview_url:
-        print('Plainview URL not configured in settings. Run \'plainview settings edit\' to add')
-        return
+        raise NoPlainviewUrlError
+    
+    #if is_valid('user_login', payload) == False:
+    #    raise Exception('Invalid login. ' + get_schema('user_login')['description'])
     
     r = requests.post(urljoin(plainview_url, '/login'), data=payload)
-            
+                
     if r.status_code != requests.codes.ok:
         print(f"Error: {r.json().get('message')}")
         return
@@ -77,7 +82,9 @@ def signup(username, password, plainview_url):
         print('Plainview URL not configured in settings. Run \'plainview settings edit\' to add')
         return
     
-    print(plainview_url)
+    if is_valid('user_signin', payload, plainview_url) == False:
+        raise Exception('Invalid signin. ' + get_schema(plainview_url)['description'])
+
     r = requests.post(urljoin(plainview_url, '/signup'), data=payload)
     
     if r.status_code != requests.codes.ok:

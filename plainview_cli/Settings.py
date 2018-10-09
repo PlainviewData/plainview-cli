@@ -1,6 +1,7 @@
 import os
 import json
 from appdirs import AppDirs
+from urllib.parse import urljoin
 
 from .utils import pretty_print_json
 
@@ -12,6 +13,7 @@ class Settings():
         self.user_log_dir = dirs.user_log_dir
         
         self.plainview_config_file = os.path.join(self.user_data_dir, 'plainview-config.json')
+        self.plainview_config = json.loads(open(self.plainview_config_file).read())
 
     def view(self):
         if os.path.isfile(self.plainview_config_file) == False:
@@ -32,5 +34,5 @@ class Settings():
 
     @property
     def plainview_url(self):
-        return json.loads(open(self.plainview_config_file).read())['plainview_url']
+        return self.plainview_config['plainview_url']
  

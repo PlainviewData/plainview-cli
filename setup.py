@@ -29,6 +29,7 @@ setup(
     install_requires=[
         'requests==2.19.1',
         'appdirs==1.4.3',
+        'jsonschema==2.6.0'
     ],
 #   no scripts in this example
 #   scripts=['bin/a-script'],

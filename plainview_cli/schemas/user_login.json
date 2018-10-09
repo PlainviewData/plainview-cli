@@ -1,0 +1,19 @@
+{
+    "title": "Plainview user login",
+    "description": "Username must be at least 3 characters long. Password must be at least 8 characters long.",
+    "$schema": "http://json-schema.org/draft-03/schema",
+    "type": "object",
+    "properties": {
+        "username": {
+            "type": "string",
+            "description": "Plainview username",
+            "minlength": 3,
+            "maxlength": 18
+        },
+        "password": {
+            "type": "string",
+            "pattern": "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$"
+        }
+    }
+    
+}
